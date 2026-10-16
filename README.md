@@ -178,6 +178,10 @@ Hovering the mark opens a card with every issue that person holds, scrolling whe
 
 The organization is the one in the page URL, so the mark reads the same whichever organization you are looking at. Your own name gets no mark. Counts are cached for ten minutes per person.
 
+- Counts come from GitHub search with your token, so they cover the repositories that token can read. A fine-grained token limited to a few repositories counts only those.
+- A red outlined dot means the read failed, usually because no token is set. Hovering the name again retries.
+- Nothing is read for a name you only pass over; the mark appears once the pointer rests on it.
+
 ### Pinned issues
 
 A pin button sits in GitHub's top bar, next to the notifications bell, with the number of pinned issues. It opens the pinned issues panel as a dropdown; clicking outside or pressing Escape closes it, and the open or closed state is per tab. On pages without the GitHub header a small floating pin button in the top right corner takes its place. A red dot on the button means the last request failed (for example no token yet); open the panel to read the message. The whole feature can be switched off in the settings.

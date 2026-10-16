@@ -303,29 +303,32 @@
 
     /* Contributor load: a comment header carrying the mark, and the card it opens */
     .mock-load { display: flex; flex-direction: column; gap: 14px; }
-    .mock-load .cmt { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); font-size: 13px; }
-    .mock-load .av { width: 20px; height: 20px; border-radius: 50%; background: var(--muted-bg, #8b949e); opacity: .5; flex: none; }
+    .mock-load .cmt { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-card); font-size: 13px; }
+    .mock-load .av { width: 20px; height: 20px; border-radius: 50%; background: var(--fg-muted); opacity: .5; flex: none; }
     .mock-load .who { font-weight: 600; }
-    .mock-load .when { color: var(--muted-fg, #8b949e); font-size: 12px; }
-    .mock-load .said { color: var(--muted-fg, #8b949e); }
+    .mock-load .when { color: var(--fg-muted); font-size: 12px; }
+    .mock-load .said { color: var(--fg-muted); }
     .ld { display: inline-block; vertical-align: baseline; margin-left: 2px; }
     .ld-dot { width: 6px; height: 6px; border-radius: 50%; position: relative; top: -1px; }
-    .ld-free { background: transparent; box-shadow: inset 0 0 0 1px var(--muted-fg, #8b949e); opacity: .45; }
-    .ld-at { background: var(--green-fg, #1a7f37); opacity: .75; }
-    .ld-n { padding: 0 6px; border-radius: 9999px; font-size: 11px; font-weight: 600; line-height: 17px; font-variant-numeric: tabular-nums; color: var(--yellow-fg, #9a6700); background: var(--yellow-bg, rgba(212,167,44,.18)); }
-    .ld-idle { color: #fff; background: var(--yellow-fg, #9a6700); }
-    .mock-load .card2 { width: 310px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
-    .mock-load .ch { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 2px 4px 9px; margin-bottom: 7px; border-bottom: 1px solid var(--border); }
+    .ld-free { background: transparent; box-shadow: inset 0 0 0 1px var(--fg-muted); opacity: .45; }
+    .ld-at { background: var(--success); opacity: .75; }
+    .ld-n { padding: 0 6px; border-radius: 9999px; font-size: 11px; font-weight: 600; line-height: 17px; font-variant-numeric: tabular-nums; color: var(--attention); background: var(--attention-bg); }
+    .ld-idle { color: var(--bg); background: var(--attention); }
+    .ld-err { background: transparent; box-shadow: inset 0 0 0 1px var(--danger); }
+    .palette .bs .ld { margin: 0; align-self: center; top: 0; }
+    .mock-load .card2 { width: 310px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-card); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+    .mock-load .ch { display: flex; align-items: center; gap: 9px; padding: 2px 4px 9px; margin-bottom: 7px; border-bottom: 1px solid var(--border); }
     .mock-load .cn { font-size: 13px; font-weight: 600; }
-    .mock-load .cs { font-size: 11.5px; color: var(--muted-fg, #8b949e); white-space: nowrap; }
+    .mock-load .cs { margin-left: auto; font-size: 11.5px; color: var(--fg-muted); white-space: nowrap; }
     .mock-load .cs b { color: var(--fg); }
-    .mock-load .cs .zero { color: var(--yellow-fg, #9a6700); }
+    .mock-load .cs .zero { color: var(--attention); }
     .mock-load .cr { display: flex; flex-direction: column; gap: 2px; padding: 6px 7px; border-radius: 6px; }
     .mock-load .cm { display: flex; align-items: center; gap: 7px; }
     .mock-load .cref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; font-weight: 500; color: var(--fg); }
-    .mock-load .cr.linked .cref { color: var(--muted-fg, #8b949e); }
-    .mock-load .cpr { padding: 0 5px; border: 1px solid var(--green-fg, #1a7f37); border-radius: 9999px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; line-height: 15px; color: var(--green-fg, #1a7f37); }
+    .mock-load .cr.linked .cref { color: var(--fg-muted); }
+    .mock-load .cpr { padding: 0 5px; border: 1px solid var(--success); border-radius: 9999px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; line-height: 15px; color: var(--success); }
     .mock-load .ct { font-size: 12.5px; line-height: 1.35; }
+      .mock-load .crf { width: 12px; height: 12px; fill: var(--fg-muted); flex: none; }
   </style>
 </head>
 <body>
@@ -498,7 +501,7 @@
         <div class="cmt"><span class="av"></span><span class="who">m.ortega</span><span class="ld ld-n">4/3</span><span class="when">an hour ago</span><span class="said">Happy to pick this up as well.</span></div>
         <div class="cmt"><span class="av"></span><span class="who">a-whitfield</span><span class="ld ld-n ld-idle">3/0</span><span class="when">32 minutes ago</span><span class="said">Assign me please.</span></div>
         <div class="card2">
-          <div class="ch"><span class="cn">m.ortega</span><span class="cs"><b>4</b> assigned &middot; <b>3</b> open PRs</span></div>
+          <div class="ch"><span class="cn">m.ortega</span><span class="cs"><b>4</b> assigned &middot; <b>3</b> open PRs</span><svg class="crf" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5a5.5 5.5 0 1 0 5.17 3.63.75.75 0 0 1 1.41.5A7 7 0 1 1 8 1a6.97 6.97 0 0 1 4.5 1.64V1.75a.75.75 0 0 1 1.5 0v3a.75.75 0 0 1-.75.75h-3a.75.75 0 0 1 0-1.5h1.3A5.47 5.47 0 0 0 8 2.5Z"/></svg></div>
           <div class="cr linked"><div class="cm"><span class="cref">webapp#1521</span><span class="cpr">PR #1544</span></div><div class="ct">Retry policy is never applied to the webhook sender</div></div>
           <div class="cr"><div class="cm"><span class="cref">webapp#1498</span></div><div class="ct">Keyboard shortcuts stop working after the results list reloads</div></div>
           <div class="cr linked"><div class="cm"><span class="cref">docs#312</span><span class="cpr">PR #318</span></div><div class="ct">Install page still points at the old package name</div></div>
@@ -509,7 +512,7 @@
       <h3 style="margin-top:28px">Every badge at a glance</h3>
       <p class="muted" style="font-size:14px">Colours follow GitHub's own tokens, so they adapt to light and dark themes. Green invites a look, yellow means attention, red means work, blue is trust, gray is neutral information.</p>
       <div class="panel gh-card palette" id="ex-palette" style="max-width:760px;padding:14px 16px">
-        <div class="g"><div class="gt">Pull request author</div><div class="bs"><span class="badge b-success">First-time contributor</span><span class="badge b-success">First PR on GitHub</span><span class="badge b-done">External</span><span class="badge b-neutral">Contributor</span><span class="badge b-info">Collaborator</span><span class="badge b-info">Member</span><span class="badge b-info">Owner</span><span class="badge b-neutral">Bot</span></div></div><div class="g"><div class="gt">Pull request fork and size</div><div class="bs"><span class="badge b-neutral">From fork</span><span class="badge b-neutral size"><span class="add">+231</span> <span class="del">-13</span></span></div></div><div class="g"><div class="gt">Pull request merge state</div><div class="bs"><span class="badge b-success">Mergeable</span><span class="badge b-attention">Behind base</span><span class="badge b-danger">Blocked</span><span class="badge b-danger">Conflicts</span><span class="badge b-attention">Checks failing</span></div></div><div class="g"><div class="gt">Issue age, and past the threshold</div><div class="bs"><span class="badge b-neutral">3w</span><span class="badge b-neutral">98d</span><span class="badge b-neutral">this month</span><span class="badge b-attention">7 mo</span></div></div><div class="g"><div class="gt">Custom field values, one colour per option</div><div class="bs"><span class="badge b-danger">Red</span><span class="badge b-severe">Orange</span><span class="badge b-attention">Yellow</span><span class="badge b-success">Green</span><span class="badge b-info">Blue</span><span class="badge b-done">Purple</span><span class="badge b-pink">Pink</span><span class="badge b-neutral">Gray</span></div></div><div class="g"><div class="gt">Issue types in the pinned issues panel</div><div class="bs"><span class="badge b-pink">Epic</span><span class="badge b-danger">Bug</span><span class="badge b-info">Feature</span><span class="badge b-attention">Task</span></div></div>
+        <div class="g"><div class="gt">Pull request author</div><div class="bs"><span class="badge b-success">First-time contributor</span><span class="badge b-success">First PR on GitHub</span><span class="badge b-done">External</span><span class="badge b-neutral">Contributor</span><span class="badge b-info">Collaborator</span><span class="badge b-info">Member</span><span class="badge b-info">Owner</span><span class="badge b-neutral">Bot</span></div></div><div class="g"><div class="gt">Pull request fork and size</div><div class="bs"><span class="badge b-neutral">From fork</span><span class="badge b-neutral size"><span class="add">+231</span> <span class="del">-13</span></span></div></div><div class="g"><div class="gt">Pull request merge state</div><div class="bs"><span class="badge b-success">Mergeable</span><span class="badge b-attention">Behind base</span><span class="badge b-danger">Blocked</span><span class="badge b-danger">Conflicts</span><span class="badge b-attention">Checks failing</span></div></div><div class="g"><div class="gt">Issue age, and past the threshold</div><div class="bs"><span class="badge b-neutral">3w</span><span class="badge b-neutral">98d</span><span class="badge b-neutral">this month</span><span class="badge b-attention">7 mo</span></div></div><div class="g"><div class="gt">Contributor load: nothing assigned, within the limit, over it, over it with nothing pushed, not readable</div><div class="bs"><span class="ld ld-dot ld-free"></span><span class="ld ld-dot ld-at"></span><span class="ld ld-n">4/3</span><span class="ld ld-n ld-idle">3/0</span><span class="ld ld-dot ld-err"></span></div></div><div class="g"><div class="gt">Custom field values, one colour per option</div><div class="bs"><span class="badge b-danger">Red</span><span class="badge b-severe">Orange</span><span class="badge b-attention">Yellow</span><span class="badge b-success">Green</span><span class="badge b-info">Blue</span><span class="badge b-done">Purple</span><span class="badge b-pink">Pink</span><span class="badge b-neutral">Gray</span></div></div><div class="g"><div class="gt">Issue types in the pinned issues panel</div><div class="bs"><span class="badge b-pink">Epic</span><span class="badge b-danger">Bug</span><span class="badge b-info">Feature</span><span class="badge b-attention">Task</span></div></div>
       </div>
 
       <h3 style="margin-top:28px">Pinned issues</h3>
@@ -539,6 +542,7 @@
         <div class="step"><h3>One batched query</h3><p>The background script (a service worker on Chromium, an event page on Firefox) groups those issues by repository and runs one GraphQL query per batch of 60 using <code>Issue.issueFieldValues</code> and <code>createdAt</code>, with your token. Pull request lists get the same treatment with <code>authorAssociation</code>, size and <code>mergeStateStatus</code>.</p></div>
         <div class="step"><h3>Keep what you chose</h3><p>From the returned values it keeps only the fields you configured, in your order, and hands back <code>field</code>, <code>value</code>, <code>colour</code> and the creation date per issue.</p></div>
         <div class="step"><h3>Or draw a board</h3><p>When the kanban toggle is on, the sub-issues of the open issue are read in one <code>subIssues</code> query with every field value they carry, and drawn as columns in place of the list. Grouping, ordering and filtering happen in the page, so switching any of them is instant. Dropping a card in another column is the one write: <code>createIssueFieldValue</code> for a field, <code>closeIssue</code> or <code>reopenIssue</code> for the state, with the card moving back if GitHub refuses.</p></div>
+        <div class="step"><h3>Or ask about a person</h3><p>With the contributor load mark on, hovering a username runs two <code>search</code> queries in one request: the open issues assigned to that login in the organization, and the open pull requests they authored, with <code>closingIssuesReferences</code> pairing each issue with the pull request that closes it. Nothing is read until you hover, and each person is cached for ten minutes.</p></div>
         <div class="step"><h3>Render badges</h3><p>The content script inserts a badge per value right after the issue type badge, after the issue number in project tables, or under the title on board cards, plus the age badge when enabled. It re-renders when GitHub redraws the page.</p></div>
       </div>
       <pre><code>{ r0: repository(owner: "org", name: "repo") {
@@ -615,7 +619,7 @@
   <section id="settings">
     <div class="wrap">
       <h2>Settings</h2>
-      <p class="muted">The token and the fields to show are the two essentials; the age badge, the pull request badges, the epic kanban toggle, the sidebar button and the pinned issues button are optional extras with their own cards. Each field is a chip. Press <kbd>Enter</kbd> or <kbd>,</kbd> to add one, <kbd>Backspace</kbd> or the × button to remove one. Names are matched case-insensitively against the fields your organization defines, and badges appear in the order of the chips. Nothing is shown until at least one field is added or the age badge is enabled.</p>
+      <p class="muted">The token and the fields to show are the two essentials; the age badge, the pull request badges, the contributor load mark, the epic kanban toggle, the sidebar button and the pinned issues button are optional extras with their own cards. Each field is a chip. Press <kbd>Enter</kbd> or <kbd>,</kbd> to add one, <kbd>Backspace</kbd> or the × button to remove one. Names are matched case-insensitively against the fields your organization defines, and badges appear in the order of the chips. Nothing is shown until at least one field is added or the age badge is enabled.</p>
       <figure>
         <img class="only-light" src="settings-light.png" alt="The settings page: token input and the field names chip box">
         <img class="only-dark" src="settings-dark.png" alt="The settings page in dark mode: token input and the field names chip box">
@@ -642,7 +646,7 @@
       <h2>Privacy</h2>
       <div class="grid">
         <div class="card"><h3>What is stored</h3><p>Your token, your field list, your preferences and your pinned issues, in <code>chrome.storage.local</code>, on your device. Uninstalling removes all of it.</p></div>
-        <div class="card"><h3>What is sent</h3><p>Repository owner, name and issue number of the issues on the page you are viewing, to <code>api.github.com</code>, with your token in the header. The only writes are the sub-issue link you click and the card you drag on the board. Nothing else, to no one else.</p></div>
+        <div class="card"><h3>What is sent</h3><p>Repository owner, name and issue number of the issues on the page you are viewing, to <code>api.github.com</code>, with your token in the header. With the contributor load mark on, the login you hover and the organization of the page. The only writes are the sub-issue link you click and the card you drag on the board. Nothing else, to no one else.</p></div>
         <div class="card"><h3>What is not</h3><p>No analytics, telemetry, crash reports, cookies or third-party services. The full policy is in <a href="https://github.com/MilosPaunovic/github-issue-toolkit/blob/main/PRIVACY.md">PRIVACY.md</a>.</p></div>
       </div>
     </div>
@@ -657,6 +661,8 @@
       <details><summary>Can I move a card on the kanban board?</summary><p>Yes, when the columns come from a single-select field or from the issue state: dragging a card writes the new field value, or closes and reopens the issue, through the GitHub API; an issue closed as not planned is closed that way again. Dropping it in the "No <em>field</em>" column clears the value. Columns made of types or assignees are not drop targets, and cards there cannot be dragged. Dragging needs a token with write access; it can be switched off in the settings, and nothing is ever written unless you drag.</p></details>
       <details><summary>Can I see only one sprint, or only the P1 issues?</summary><p>Yes. The Filter control keeps one value of any dimension, the same ones the columns can be made of, and the count in the toolbar says how many of the epic's sub-issues are left. Filtering happens in the page, so the columns stay as they are and switching back costs nothing.</p></details>
       <details><summary>Can I hide the done sub-issues?</summary><p>Yes. The Hide closed checkbox in the toolbar takes every closed sub-issue off the board, whatever the columns are made of, and the count in the toolbar says how many are left. The choice is remembered like the others. With the columns made of the issue state, the empty Closed column stays, so a card can still be dragged there to close it.</p></details>
+      <details><summary>Why does a username get a mark only after I hover it?</summary><p>Because each mark is a query about one person. Reading every name on a long thread up front would spend requests on people you never meant to look at, so the contributor load mark waits for you to rest on a name. Your own name never gets one. A red outlined dot means the read failed, usually because no token is set; hovering the name again retries.</p></details>
+      <details><summary>Which issues does the contributor count include?</summary><p>Open issues assigned to that person in the organization of the page, and open pull requests they authored there, as GitHub search returns them for your token. A repository your token cannot read is left out, so a fine-grained token limited to a few repositories counts only those. The pull request shown next to an issue comes from GitHub's own link between them, not from closing keywords.</p></details>
       <details><summary>The kanban board says the epic has more sub-issues than it shows.</summary><p>The board loads up to 500 sub-issues, in pages of 100. Beyond that the count in the toolbar reads "500 of 640" and the rest is left out.</p></details>
       <details><summary>Where does the sidebar go when I hide it?</summary><p>Nowhere: the extension sets <code>display: none</code> on GitHub's metadata column, the same thing GitHub does when its own artifacts panel opens, and its content area grows into the space by itself. The chevron stays in the gutter, so pressing it again brings the sidebar straight back. Nothing is changed on GitHub's side and nothing is sent anywhere.</p></details>
       <details><summary>Does linking need extra permissions?</summary><p>Yes. Making an issue a sub-issue of a pinned epic writes to GitHub, so the token needs write access to the issue's repository: the <code>repo</code> scope on a classic token, or <code>Issues: Read and write</code> on a fine-grained one. Badges alone work with read-only access.</p></details>

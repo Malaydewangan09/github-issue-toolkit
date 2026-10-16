@@ -690,8 +690,14 @@
     if (!anchor.isConnected) return;
     // A read that failed is worth trying again the next time the name is hovered.
     if (!data) delete anchor.dataset.gsfLoad;
-    if (anchor.nextElementSibling && anchor.nextElementSibling.classList.contains("gsf-load")) return;
-    anchor.after(loadBadge(org, login, data));
+    const badge = loadBadge(org, login, data);
+    const existing = anchor.nextElementSibling;
+    if (existing && existing.classList.contains("gsf-load")) {
+      // Only a mark that could not be read gives way, so a retry that worked shows up.
+      if (existing.dataset.state === "err") existing.replaceWith(badge);
+      return;
+    }
+    anchor.after(badge);
   }
 
   function loadCardElement() {
@@ -842,11 +848,14 @@
     if (loadCard) loadCard.dataset.busy = "1";
     const data = await loadFetch(org, login, true);
     if (loadCard) delete loadCard.dataset.busy;
-    if (loadAnchor && loadAnchor.isConnected) {
-      const fresh = loadBadge(org, login, data);
-      loadAnchor.replaceWith(fresh);
-      loadAnchor = fresh;
-    }
+    // Every mark for the same person, not only the hovered one, since the cache now holds the new answer.
+    document.querySelectorAll(".gsf-load").forEach((mark) => {
+      const payload = loadPayloads.get(mark);
+      if (!payload || payload.org !== org || payload.login.toLowerCase() !== login.toLowerCase()) return;
+      const fresh = loadBadge(org, payload.login, data);
+      mark.replaceWith(fresh);
+      if (mark === loadAnchor) loadAnchor = fresh;
+    });
     loadCardBuild({ org, login, data });
     if (loadAnchor && loadAnchor.isConnected) loadCardPlace(loadAnchor);
   }
@@ -912,7 +921,12 @@
   });
 
   document.addEventListener("mouseout", (event) => {
-    if (event.target && event.target.closest && event.target.closest(".gsf-load")) loadCardHide();
+    const target = event.target;
+    if (!target || !target.closest) return;
+    if (target.closest(".gsf-load")) loadCardHide();
+    // Passing over a name on the way somewhere else is not a hover, so nothing is read for it.
+    const anchor = target.closest("a[data-hovercard-type=\"user\"], a.author");
+    if (anchor && !anchor.contains(event.relatedTarget)) clearTimeout(loadHoverTimer);
   });
 
   // The page moving under the card leaves it pointing at nothing, so it closes. Its own list
