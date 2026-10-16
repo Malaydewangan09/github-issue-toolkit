@@ -300,6 +300,32 @@
     .example-caption { text-align: center; color: var(--fg-muted); font-size: 13px; margin: 10px 0 0; }
     footer { padding: 32px 0 48px; border-top: 1px solid var(--border); color: var(--fg-muted); font-size: 14px; }
     footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+    /* Contributor load: a comment header carrying the mark, and the card it opens */
+    .mock-load { display: flex; flex-direction: column; gap: 14px; }
+    .mock-load .cmt { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); font-size: 13px; }
+    .mock-load .av { width: 20px; height: 20px; border-radius: 50%; background: var(--muted-bg, #8b949e); opacity: .5; flex: none; }
+    .mock-load .who { font-weight: 600; }
+    .mock-load .when { color: var(--muted-fg, #8b949e); font-size: 12px; }
+    .mock-load .said { color: var(--muted-fg, #8b949e); }
+    .ld { display: inline-block; vertical-align: baseline; margin-left: 2px; }
+    .ld-dot { width: 6px; height: 6px; border-radius: 50%; position: relative; top: -1px; }
+    .ld-free { background: transparent; box-shadow: inset 0 0 0 1px var(--muted-fg, #8b949e); opacity: .45; }
+    .ld-at { background: var(--green-fg, #1a7f37); opacity: .75; }
+    .ld-n { padding: 0 6px; border-radius: 9999px; font-size: 11px; font-weight: 600; line-height: 17px; font-variant-numeric: tabular-nums; color: var(--yellow-fg, #9a6700); background: var(--yellow-bg, rgba(212,167,44,.18)); }
+    .ld-idle { color: #fff; background: var(--yellow-fg, #9a6700); }
+    .mock-load .card2 { width: 310px; padding: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+    .mock-load .ch { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 2px 4px 9px; margin-bottom: 7px; border-bottom: 1px solid var(--border); }
+    .mock-load .cn { font-size: 13px; font-weight: 600; }
+    .mock-load .cs { font-size: 11.5px; color: var(--muted-fg, #8b949e); white-space: nowrap; }
+    .mock-load .cs b { color: var(--fg); }
+    .mock-load .cs .zero { color: var(--yellow-fg, #9a6700); }
+    .mock-load .cr { display: flex; flex-direction: column; gap: 2px; padding: 6px 7px; border-radius: 6px; }
+    .mock-load .cm { display: flex; align-items: center; gap: 7px; }
+    .mock-load .cref { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; font-weight: 500; color: var(--fg); }
+    .mock-load .cr.linked .cref { color: var(--muted-fg, #8b949e); }
+    .mock-load .cpr { padding: 0 5px; border: 1px solid var(--green-fg, #1a7f37); border-radius: 9999px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; line-height: 15px; color: var(--green-fg, #1a7f37); }
+    .mock-load .ct { font-size: 12.5px; line-height: 1.35; }
   </style>
 </head>
 <body>
@@ -374,6 +400,7 @@
         <div class="card"><h3>Projects views too</h3><p>The same badges appear on GitHub Projects: after the issue number in the table layout, under the title on board cards. A field the view already shows, as a column, a card field or the field the board is grouped by, is skipped so nothing appears twice. Draft items and pull requests are left alone.</p></div>
         <div class="card"><h3>Issue age, if you want it</h3><p>An optional gray badge shows how long ago each issue was created, in months, weeks or days, and turns yellow once an issue has been open longer than a threshold you set, 90 days by default. An issue younger than the unit reads today, this week or this month. Off by default, one checkbox in the settings.</p></div>
         <div class="card"><h3>Pull request badges</h3><p>On the pull request list and on Projects views that contain pull requests: whether the author is a first-time contributor, external, a contributor, a collaborator, a member or a bot, plus optional badges for forks, size and merge state.</p></div>
+        <div class="card"><h3>Who is already busy</h3><p>A mark after a username on an issue or pull request says what that person holds in the organization: a dot when there is room, a count of assigned issues over open pull requests when there is not. Hovering lists the issues, each with the pull request that closes it. Off by default.</p></div>
         <div class="card"><h3>Epics as a board</h3><p>An issue with sub-issues gets a List and Kanban toggle. The board groups the sub-issues by any field they carry, orders each column by another, filters everything down to one value of a third, and hides the closed ones on request. Drag a card to another column and the field value, or the issue state, is written back to GitHub.</p></div>
         <div class="card"><h3>Sidebar out of the way</h3><p>A chevron in the gutter hides an issue's whole metadata column, and the issue body and the board take the width. It holds on every issue until you press it again.</p></div>
         <div class="card"><h3>Pinned epics</h3><p>A pin button in GitHub's top bar keeps your epics one click away: copy their reference, or make the issue you are looking at a sub-issue of one. Optional as well.</p></div>
@@ -461,6 +488,23 @@
         <div class="row pr-row"><svg class="state pr" viewBox="0 0 16 16" aria-label="Open pull request" role="img"><path d="M1.5 3.25a2.25 2.25 0 1 1 3 2.122v5.256a2.251 2.251 0 1 1-1.5 0V5.372A2.25 2.25 0 0 1 1.5 3.25Zm5.677-.177L9.573.677A.25.25 0 0 1 10 .854V2.5h1A2.5 2.5 0 0 1 13.5 5v5.628a2.251 2.251 0 1 1-1.5 0V5a1 1 0 0 0-1-1h-1v1.646a.25.25 0 0 1-.427.177L7.177 3.427a.25.25 0 0 1 0-.354Z"/></svg><div class="text"><span class="pr-title">chore(deps): bump vite from 6.1.0 to 6.2.1</span><span class="label b-info">dependencies</span><span class="badge b-neutral">Bot</span><span class="badge b-neutral size"><span class="add">+4</span> <span class="del">-4</span></span><span class="badge b-danger">Conflicts</span><div class="pr-meta">#1503 opened last week by dependabot</div></div><div class="extras"><span class="check ok" title="All checks passed">&#10003;</span></div></div>
       </div>
       <p class="example-caption">All four badge kinds enabled here for the illustration; only the author badge is on by default.</p>
+
+
+      <h3 style="margin-top:28px">Contributor load</h3>
+      <p class="muted" style="font-size:14px">A mark after a username on an issue or pull request. An outlined dot is nothing assigned in this organization, a filled dot is at or under the limit, and a count appears above it, reading assigned over open pull requests. The count fills in when that second number is zero. Hovering it lists what the person holds, each line carrying the pull request that closes it when there is one.</p>
+      <div class="panel gh-card mock-load" id="ex-load" style="max-width:700px;padding:14px 16px">
+        <div class="cmt"><span class="av"></span><span class="who">t-nakamura</span><span class="ld ld-dot ld-free"></span><span class="when">3 hours ago</span><span class="said">I would like to take this one.</span></div>
+        <div class="cmt"><span class="av"></span><span class="who">priya-s</span><span class="ld ld-dot ld-at"></span><span class="when">2 hours ago</span><span class="said">Can you assign this to me?</span></div>
+        <div class="cmt"><span class="av"></span><span class="who">m.ortega</span><span class="ld ld-n">4/3</span><span class="when">an hour ago</span><span class="said">Happy to pick this up as well.</span></div>
+        <div class="cmt"><span class="av"></span><span class="who">a-whitfield</span><span class="ld ld-n ld-idle">3/0</span><span class="when">32 minutes ago</span><span class="said">Assign me please.</span></div>
+        <div class="card2">
+          <div class="ch"><span class="cn">m.ortega</span><span class="cs"><b>4</b> assigned &middot; <b>3</b> open PRs</span></div>
+          <div class="cr linked"><div class="cm"><span class="cref">webapp#1521</span><span class="cpr">PR #1544</span></div><div class="ct">Retry policy is never applied to the webhook sender</div></div>
+          <div class="cr"><div class="cm"><span class="cref">webapp#1498</span></div><div class="ct">Keyboard shortcuts stop working after the results list reloads</div></div>
+          <div class="cr linked"><div class="cm"><span class="cref">docs#312</span><span class="cpr">PR #318</span></div><div class="ct">Install page still points at the old package name</div></div>
+        </div>
+      </div>
+      <p class="example-caption">The card belongs to the third row. The limit is 1 here, so the first two need no number.</p>
 
       <h3 style="margin-top:28px">Every badge at a glance</h3>
       <p class="muted" style="font-size:14px">Colours follow GitHub's own tokens, so they adapt to light and dark themes. Green invites a look, yellow means attention, red means work, blue is trust, gray is neutral information.</p>

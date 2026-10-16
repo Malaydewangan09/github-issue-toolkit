@@ -4,7 +4,9 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+
+- A **contributor load** mark next to usernames on issues and pull requests, off by default. An outlined dot is nothing assigned in that organization, a filled dot is at or under the limit you set, and above it a count of assigned issues over open pull requests, filled in when that second number is zero. Hovering it lists what the person holds, each issue with the pull request that closes it, taken from GitHub's own references rather than from closing keywords.
 
 ## [2.5.0] - 2026-09-24
 

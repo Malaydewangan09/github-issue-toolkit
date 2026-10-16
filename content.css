@@ -544,3 +544,247 @@
   height: 16px;
   fill: currentColor;
 }
+
+/* Contributor load: the mark next to a username and the card it opens */
+.gsf-load {
+  display: inline-block;
+  vertical-align: baseline;
+  margin-left: 5px;
+  text-decoration: none !important;
+  border: 0;
+  transition: transform 0.12s ease;
+}
+.gsf-load:hover {
+  transform: scale(1.25);
+}
+.gsf-load-dot {
+  width: 6px;
+  height: 6px;
+  position: relative;
+  top: -1px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0;
+}
+/* Nothing assigned: an outline, because an empty slot is the quiet case. */
+.gsf-load-dot[data-state="free"] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--fgColor-muted);
+  opacity: 0.45;
+}
+/* At the limit: filled, but still only a dot, since no decision is needed. */
+.gsf-load-dot[data-state="at"] {
+  background: var(--fgColor-success);
+  opacity: 0.75;
+}
+.gsf-load-dot[data-state="err"] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--fgColor-danger);
+}
+/* Over the limit: the digits carry how far over, the colour only says that it is over. */
+.gsf-load-count {
+  padding: 0 6px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 17px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fgColor-attention);
+  background: var(--bgColor-attention-muted);
+}
+/* Over the limit with nothing pushed for any of it, which is the case worth acting on. */
+.gsf-load-count[data-idle] {
+  color: var(--fgColor-onEmphasis);
+  background: var(--bgColor-attention-emphasis);
+}
+
+.gsf-load-card {
+  position: fixed;
+  z-index: 2147483000;
+  box-sizing: border-box;
+  width: 310px;
+  padding: 10px;
+  border: 1px solid var(--borderColor-default);
+  border-radius: 10px;
+  background: var(--overlay-bgColor, var(--bgColor-default));
+  box-shadow: var(--shadow-floating-small, 0 8px 24px rgba(0, 0, 0, 0.3));
+  color: var(--fgColor-default);
+  font-size: 12.5px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-2px);
+  transition: opacity 0.13s ease, transform 0.13s ease;
+}
+.gsf-load-card[data-open] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+.gsf-load-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 2px 2px 9px 4px;
+  margin-bottom: 7px;
+  border-bottom: 1px solid var(--borderColor-muted);
+}
+/* A long login must give way rather than push the counts and the refresh button off the card. */
+.gsf-load-name {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gsf-load-stats {
+  flex: none;
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--fgColor-muted);
+  white-space: nowrap;
+}
+.gsf-load-stats a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+.gsf-load-stats a:hover {
+  color: var(--fgColor-default) !important;
+}
+.gsf-load-stats b {
+  font-weight: 600;
+  color: var(--fgColor-default);
+}
+.gsf-load-stats a.gsf-load-none b {
+  color: var(--fgColor-attention);
+}
+.gsf-load-refresh {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin: -2px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: none;
+  color: var(--fgColor-muted);
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+.gsf-load-refresh:hover {
+  background: var(--bgColor-neutral-muted);
+  color: var(--fgColor-default);
+}
+.gsf-load-card[data-busy] .gsf-load-refresh svg {
+  animation: gsf-load-spin 0.7s linear infinite;
+}
+.gsf-load-card[data-busy] .gsf-load-list,
+.gsf-load-card[data-busy] .gsf-load-stats {
+  opacity: 0.45;
+}
+@keyframes gsf-load-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* The whole list is here rather than a link out, so it scrolls instead of growing past the viewport. */
+.gsf-load-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-height: 272px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--borderColor-default) transparent;
+}
+.gsf-load-list::-webkit-scrollbar {
+  width: 8px;
+}
+.gsf-load-list::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background: var(--borderColor-default);
+  background-clip: content-box;
+}
+.gsf-load-list::-webkit-scrollbar-thumb:hover {
+  background: var(--fgColor-muted);
+  background-clip: content-box;
+}
+.gsf-load-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 7px;
+  border-radius: 6px;
+  transition: background 0.1s;
+}
+.gsf-load-row:hover {
+  background: var(--bgColor-neutral-muted);
+}
+.gsf-load-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.gsf-load-ref {
+  font-family: var(--fontStack-monospace, ui-monospace, monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--fgColor-muted);
+  white-space: nowrap;
+}
+/* Nothing is in flight for this one, so its reference stays at full strength. */
+.gsf-load-row:not([data-linked]) .gsf-load-ref {
+  color: var(--fgColor-default);
+}
+.gsf-load-pr {
+  flex: none;
+  padding: 0 5px;
+  border: 1px solid var(--borderColor-success-muted);
+  border-radius: 9999px;
+  font-family: var(--fontStack-monospace, ui-monospace, monospace);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 15px;
+  white-space: nowrap;
+  color: var(--fgColor-success) !important;
+  text-decoration: none !important;
+}
+.gsf-load-pr:hover {
+  background: var(--bgColor-success-muted);
+}
+.gsf-load-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: inherit !important;
+  text-decoration: none !important;
+}
+.gsf-load-title:hover {
+  text-decoration: underline !important;
+}
+.gsf-load-empty {
+  padding: 8px 7px 4px;
+  font-size: 12.5px;
+  color: var(--fgColor-muted);
+}
+.gsf-load-more {
+  display: block;
+  margin-top: 4px;
+  padding: 6px 7px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  color: var(--fgColor-muted) !important;
+  text-decoration: none !important;
+}
+.gsf-load-more:hover {
+  background: var(--bgColor-neutral-muted);
+  color: var(--fgColor-default) !important;
+}

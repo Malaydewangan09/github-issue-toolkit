@@ -21,6 +21,15 @@ Illustrations of an invented repository, rendered from the documentation site wi
 </picture>
 </p>
 
+**Contributor load**: what the person behind a username already holds, and the card listing it.
+
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/example-load-dark.png">
+  <img src="docs/example-load-light.png" alt="Comment headers with a contributor load mark after each username, and the card listing the issues one of them holds" width="700">
+</picture>
+</p>
+
 **Projects table view**: badges follow the issue number in the title cell.
 
 <p align="center">
@@ -92,6 +101,7 @@ Illustrations of an invented repository, rendered from the documentation site wi
 - **Pull request badges** on the pull request list and on Projects views that contain pull requests: the author's relation to the repository (first-time contributor, external, contributor, collaborator, member, bot) on by default, plus optional badges for forks, size (added lines in green, removed in red) and merge state.
 - An **epic kanban**: above the sub-issues list of an issue, a List and Kanban toggle draws those sub-issues as a board. The columns come from any field the sub-issues carry (or their state, type or assignee), the cards inside a column are ordered by another, a filter keeps one value of a third, and a checkbox hides the closed sub-issues; every choice is remembered. Dragging a card to another column writes the field value back to GitHub, or closes and reopens the issue. Both the board and the dragging can be switched off in the settings.
 - A button that **hides the issue sidebar**: one press folds away the whole metadata column, assignees, labels, type, fields, projects and the rest, and gives the issue body and the board that width. The button sits in the gutter between the two, so it does not move when the sidebar goes, and what you chose holds on every issue. Can be switched off in the settings.
+- A **contributor load** mark next to usernames on issues and pull requests: an outlined dot for nothing assigned, a filled dot at or under the limit you set, and a count above it reading assigned over open pull requests. Hovering lists the issues that person holds in the organization, each with the pull request that closes it. Off by default.
 - A **Pinned issues** button in GitHub's top bar: pin epics, copy their reference, or make the issue you are looking at a sub-issue of a pinned epic with one click. Can be switched off in the settings.
 - Any field type works: single-select, multi-select, text, number, date.
 - Choose which fields to show and in what order; nothing is shown until you pick at least one field or enable the age badge.
@@ -134,7 +144,7 @@ Minimum version: Firefox 140, required by the `data_collection_permissions` mani
    - **Fine-grained**: https://github.com/settings/personal-access-tokens/new. Set the organization as resource owner, pick the repositories, and under Repository permissions set `Issues` to `Read-only` (or `Read and write` if you want to link issues to pinned epics from the panel, or drag cards on the kanban board).
 2. Paste the token on the settings page, click **Test token**, then **Save**.
 3. Add the **Field names** to show: each field is a chip, press Enter or comma to add one, Backspace or the × button to remove one. Names are matched case-insensitively. No badges appear until at least one field is added or the age badge is enabled.
-4. Optionally enable the **Issue age** badge (off by default), pick its unit and the age after which it turns yellow (90 days by default), choose which **Pull request** badges you want (author relation on by default; fork, size and merge state off), and decide whether you want the **Epic kanban** toggle, dragging cards on it, the button that hides the **Issue sidebar**, and the **Pinned issues** button in GitHub's top bar (all on by default).
+4. Optionally enable the **Issue age** badge (off by default), pick its unit and the age after which it turns yellow (90 days by default), choose which **Pull request** badges you want (author relation on by default; fork, size and merge state off), enable **Contributor load** and set the limit above which someone is flagged (off by default, limit 1), and decide whether you want the **Epic kanban** toggle, dragging cards on it, the button that hides the **Issue sidebar**, and the **Pinned issues** button in GitHub's top bar (all on by default).
 5. Open any issue with sub-issues, or a project view such as `https://github.com/orgs/<org>/projects/<n>/views/<v>`.
 
 ### Epic kanban
@@ -157,6 +167,16 @@ A small chevron in the gutter between an issue and its sidebar hides the metadat
 - The choice holds on every issue and in every tab until you press the button again.
 - On a narrow window, where GitHub already stacks the sidebar under the issue instead of beside it, the button is not shown; there is nothing to gain there.
 - The whole thing can be switched off on the settings page.
+
+### Contributor load
+
+Maintainers who hand out issues keep asking the same question when somebody volunteers: is this person already holding something? Answering it means opening a search, reading a count, then checking whether any of it has a pull request yet.
+
+With **Contributor load** enabled, hovering a username on an issue or pull request puts a mark after it. An outlined dot means nothing assigned in this organization. A filled dot means they are at or under the limit. Above the limit the mark becomes a count, `3/2`, three issues assigned and two pull requests open, and it fills in when that second number is zero, which is the case worth a comment.
+
+Hovering the mark opens a card with every issue that person holds, scrolling when there are many, each carrying the pull request that closes it when one exists. Those links come from GitHub's own issue to pull request references, not from reading closing keywords out of descriptions, so a pull request that never wrote `Closes #12` is still shown against its issue. A refresh button in the card reads that one person again when the ten minute cache is behind what just happened.
+
+The organization is the one in the page URL, so the mark reads the same whichever organization you are looking at. Your own name gets no mark. Counts are cached for ten minutes per person.
 
 ### Pinned issues
 

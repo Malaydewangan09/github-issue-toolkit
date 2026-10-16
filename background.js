@@ -170,6 +170,84 @@ async function fetchFieldValues(issues) {
 }
 
 // ---------------------------------------------------------------------------
+// Contributor load: what one person already holds in one organization
+// ---------------------------------------------------------------------------
+
+// Who the token belongs to, so the mark can skip the reader's own name. Held for the life of the
+// worker and read again after it restarts, which is cheap enough not to need storing.
+let viewerLogin = null;
+
+async function viewer() {
+  if (viewerLogin !== null) return viewerLogin;
+  const { token } = await getSettings();
+  if (!token) return "";
+  const data = await graphql(token, "{ viewer { login } }").catch(() => null);
+  viewerLogin = (data && data.viewer && data.viewer.login) || "";
+  return viewerLogin;
+}
+
+const LOAD_ISSUE_SAMPLE = 25;
+const LOAD_PULL_SAMPLE = 50;
+
+// GraphQL knows which issue a pull request actually closes, so the card can say which of the
+// assigned issues is already being worked on instead of guessing from closing keywords in the body.
+async function fetchContributorLoad(ref) {
+  const { token } = await getSettings();
+  if (!token) return { error: "NO_TOKEN" };
+  const org = String((ref && ref.org) || "").trim();
+  const login = String((ref && ref.login) || "").trim();
+  if (!org || !login) return { error: "An organization and a login are both needed." };
+
+  const assigned = JSON.stringify(`org:${org} is:issue is:open assignee:${login}`);
+  const pulls = JSON.stringify(`org:${org} is:pr is:open author:${login}`);
+  const data = await graphql(token, `{
+    assigned: search(query: ${assigned}, type: ISSUE, first: ${LOAD_ISSUE_SAMPLE}) {
+      issueCount
+      nodes { ... on Issue { number title url repository { nameWithOwner } } }
+    }
+    pulls: search(query: ${pulls}, type: ISSUE, first: ${LOAD_PULL_SAMPLE}) {
+      issueCount
+      nodes {
+        ... on PullRequest {
+          number url
+          closingIssuesReferences(first: 10) { nodes { number repository { nameWithOwner } } }
+        }
+      }
+    }
+  }`, { partial: true });
+
+  const closes = new Map();
+  for (const pull of (data.pulls && data.pulls.nodes) || []) {
+    if (!pull) continue;
+    for (const issue of (pull.closingIssuesReferences && pull.closingIssuesReferences.nodes) || []) {
+      if (!issue || !issue.repository) continue;
+      const key = `${issue.repository.nameWithOwner}#${issue.number}`;
+      if (!closes.has(key)) closes.set(key, { number: pull.number, url: pull.url });
+    }
+  }
+
+  const items = [];
+  for (const issue of (data.assigned && data.assigned.nodes) || []) {
+    if (!issue || !issue.repository) continue;
+    const key = `${issue.repository.nameWithOwner}#${issue.number}`;
+    items.push({
+      key,
+      repo: issue.repository.nameWithOwner.split("/")[1] || issue.repository.nameWithOwner,
+      number: issue.number,
+      title: issue.title,
+      url: issue.url,
+      pull: closes.get(key) || null
+    });
+  }
+
+  return {
+    assigned: (data.assigned && data.assigned.issueCount) || 0,
+    pulls: (data.pulls && data.pulls.issueCount) || 0,
+    items
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Epic kanban: every sub-issue of one issue, with the field values the board groups and orders by
 // ---------------------------------------------------------------------------
 
@@ -378,6 +456,12 @@ api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type === "fetchPullRequests") {
     return reply(fetchPullRequests(msg.pulls || []), sendResponse);
   }
+  if (msg.type === "viewerLogin") {
+    return reply(viewer().then((login) => ({ login })), sendResponse);
+  }
+  if (msg.type === "fetchContributorLoad") {
+    return reply(fetchContributorLoad(msg.contributor), sendResponse);
+  }
   if (msg.type === "fetchEpic") {
     return reply(fetchEpic(msg.issue), sendResponse);
   }
@@ -400,6 +484,7 @@ api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       const token = String(msg.token || "").trim();
       if (!token) return { error: "No token given" };
       const data = await graphql(token, "{ viewer { login } }");
+      viewerLogin = null;
       return { login: data.viewer && data.viewer.login };
     })(), sendResponse);
   }
